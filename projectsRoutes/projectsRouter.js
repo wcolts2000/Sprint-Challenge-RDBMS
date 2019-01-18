@@ -37,7 +37,7 @@ router.get('/:id', (req, res) => {
   db('projects')
     .where({ id: req.params.id})
     .then(project => {
-      // if(project.length) {
+      if(project.length) {
       //   console.log("PROJECT", project[0]);
         
         db('actions')
@@ -53,7 +53,7 @@ router.get('/:id', (req, res) => {
 
         })
         .catch(err => res.status(404).json({ message: "no actions found for that project"}))
-      // } else { res.status(404).json({ message: "no project found by that id"})}
+      } else { res.status(404).json({ message: "no project found by that id"})}
     }
     )
     .catch(err => res.status(500).json({ message: "there was an error retrieving data"}))
