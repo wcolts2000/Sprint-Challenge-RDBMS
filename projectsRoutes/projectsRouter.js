@@ -48,8 +48,9 @@ router.get('/:id', (req, res) => {
         // .select('projects.id', 'projects.name', 'projects.description', 'projects.complete', 'actions.*')
         // .join('actions', 'actions.project_id', 'projects.id')
         .then(action => {
-
-          res.status(200).json({id: project[0].id, name: project[0].name, description: project[0].description, completed: project[0].complete ===0 ? false : true , actions: action })
+          convertedAction = action.map(action => action = {id: action.id, description: action.description, notes: action.notes, complete: action.complete === 0 ? false : true})
+          
+          res.status(200).json({id: project[0].id, name: project[0].name, description: project[0].description, completed: project[0].complete ===0 ? false : true , actions: convertedAction })
 
         })
         .catch(err => res.status(404).json({ message: "no actions found for that project"}))
