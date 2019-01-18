@@ -4,10 +4,39 @@ const db = require('../data/dbConfig');
 
 const router = express.Router();
 
+// ADD A PROJECT
+router.post('/', (req, res) => {
+  const { name, description ,complete } = req.body;
+  if(!name.length || !description.length) {
+    res.status(400).json({ message: "must provide a name, a description, and if complete or not"})
+  } else {
+
+    db('projects')
+    .insert(req.body)
+    .then(ids => {
+      db('projects')
+        .where({ id: ids[0]})
+        .then(project => {
+          res.status(201).json(project)
+        })
+    })
+    .catch(err => res.status(500).json({ message: "there was an error creating the project"}))
+  };
+})
+
+// GET ALL PROJECTS
 router.get('/', (req, res) => {
   db('projects')
     .then(projects => res.status(200).json(projects))
     .catch(err => res.status(500).json({ message: "error getting data"}))
 })
+
+
+// GET SINGLE PROJECT AND DISPLAY INFO JOINED WITH ALL ITS CORRESPONDING ACTIONS
+// router.get('/:id', (req, res) => {
+//   db('projects')
+//     .where({ id: req.params.id})
+//     .then(projects)
+// })
 
 module.exports = router;
