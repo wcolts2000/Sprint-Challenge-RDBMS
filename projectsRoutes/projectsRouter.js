@@ -31,27 +31,17 @@ router.get('/', (req, res) => {
     .catch(err => res.status(500).json({ message: "error getting data"}))
 })
 
-
 // GET SINGLE PROJECT AND DISPLAY INFO JOINED WITH ALL ITS CORRESPONDING ACTIONS
 router.get('/:id', (req, res) => {
   db('projects')
     .where({ id: req.params.id})
     .then(project => {
       if(project.length) {
-      //   console.log("PROJECT", project[0]);
-        
         db('actions')
-        
-        // .where({project_id: req.params.id})
-        // console.log("ACTIONS", actions);
         .where({project_id: req.params.id})
-        // .select('projects.id', 'projects.name', 'projects.description', 'projects.complete', 'actions.*')
-        // .join('actions', 'actions.project_id', 'projects.id')
         .then(action => {
           convertedAction = action.map(action => action = {id: action.id, description: action.description, notes: action.notes, complete: !!(action.complete)})
-          
           res.status(200).json({id: project[0].id, name: project[0].name, description: project[0].description, completed: !!(project[0].complete), actions: convertedAction })
-
         })
         .catch(err => res.status(404).json({ message: "no actions found for that project"}))
       } else { res.status(404).json({ message: "no project found by that id"})}
