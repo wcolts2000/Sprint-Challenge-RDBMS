@@ -48,8 +48,10 @@ router.get('/:id', (req, res) => {
 
 // Update Action
 router.put('/:id', (req,res) => {
+  const chagnedAction = req.body;
   db('actions')
   .where({ id: req.params.id})
+  .update(chagnedAction)
   .then(count => {
     if(count) {
       res.status(200).json(count)

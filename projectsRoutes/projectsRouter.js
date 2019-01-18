@@ -40,8 +40,8 @@ router.get('/:id', (req, res) => {
         db('actions')
         .where({project_id: req.params.id})
         .then(action => {
-          convertedAction = action.map(action => action = {id: action.id, description: action.description, notes: action.notes, complete: !!(action.complete)})
-          res.status(200).json({id: project[0].id, name: project[0].name, description: project[0].description, completed: !!(project[0].complete), actions: convertedAction })
+          convertedAction = action.map(action => action = {id: action.id, description: action.description, notes: action.notes, complete: !!action.complete})
+          res.status(200).json({id: project[0].id, name: project[0].name, description: project[0].description, completed: !!project[0].complete, actions: convertedAction })
         })
         .catch(err => res.status(404).json({ message: "no actions found for that project"}))
       } else { res.status(404).json({ message: "no project found by that id"})}
