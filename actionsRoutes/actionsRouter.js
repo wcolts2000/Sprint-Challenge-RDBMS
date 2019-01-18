@@ -7,7 +7,11 @@ const router = express.Router();
 // ADD A ACTION
 router.post('/', (req, res) => {
   const { description, notes, complete, project_id } = req.body;
-  if(!description.length || !notes.length || complete || !project_id) {
+  if(!description 
+    || !notes 
+    // || complete < 0
+    || !project_id
+    ) {
     res.status(400).json({ message: "must provide a description, notes, and if complete or not, and a corresponding project id"})
   } else {
 
