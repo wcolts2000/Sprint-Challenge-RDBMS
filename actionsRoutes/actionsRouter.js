@@ -64,6 +64,7 @@ router.put('/:id', (req,res) => {
 router.delete('/:id', (req, res) => {
   db('actions')
   .where({ id: req.params.id})
+  .del()
   .then(count => {
     if(count) {
       res.status(200).json(count)
